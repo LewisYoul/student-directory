@@ -23,7 +23,7 @@ def input_students
   name = gets.chomp
   #while name is NOT empty execute the following code
   while !name.empty? do
-    students << {name: name, cohort: :november}
+    students << {name: name, cohort: :november, hobby: :tennis, height: "6ft"}
     puts "Now we have #{students.count} students"
     #obtain another name from the user
     name = gets.chomp
@@ -32,26 +32,17 @@ def input_students
   students
 end
 
-=begin
-def sort_by_letter
-  puts "Would you like to return students names that begin with a certain letter?"
-  puts "If so please enter that letter now, otherwise hit return"
-  sort = gets.chomp
-end
-=end
-
 def print_header
   puts "The students of Villains Academy"
   puts "--------------"
 end
 
 def print(students)
-  counter = 1
-  students.each_with_index do |student, index|
-    if student[:name].length < 12
-      puts "#{counter}. #{student[:name]} (#{student[:cohort]} cohort)"
-      counter += 1
-    end
+  count = 1
+  until count == students.length+1
+    current = students[count-1]
+    puts "#{count}. #{current[:name]} - #{current[:hobby]} - #{current[:height]}"
+    count += 1
   end
 end
 
