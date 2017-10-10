@@ -33,21 +33,21 @@ def input_students
 end
 
 def print_header
-  puts "The students of Villains Academy"
-  puts "--------------"
+  puts "The students of Villains Academy".center(100)
+  puts "--------------".center(100)
 end
 
 def print(students)
   count = 1
   until count == students.length+1
     current = students[count-1]
-    puts "#{count}. #{current[:name]} - #{current[:hobby]} - #{current[:height]}"
+    puts "#{count}. #{current[:name]} - #{current[:hobby]} - #{current[:height]}".center(100)
     count += 1
   end
 end
 
 def print_footer(students)
-  puts "Overall we have #{students.count} great students."
+  puts "Overall we have #{students.count} great students.".center(100)
 end
 
 students = input_students
