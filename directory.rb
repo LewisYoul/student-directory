@@ -32,23 +32,23 @@ def input_students
   students
 end
 
+=begin
 def sort_by_letter
   puts "Would you like to return students names that begin with a certain letter?"
   puts "If so please enter that letter now, otherwise hit return"
   sort = gets.chomp
 end
+=end
 
 def print_header
   puts "The students of Villains Academy"
   puts "--------------"
 end
 
-def print(students, sort)
+def print(students)
   counter = 1
   students.each_with_index do |student, index|
-    if sort.empty?
-      puts "#{index+1}. #{student[:name]} (#{student[:cohort]} cohort)"
-    elsif student[:name][0] == sort
+    if student[:name].length < 12
       puts "#{counter}. #{student[:name]} (#{student[:cohort]} cohort)"
       counter += 1
     end
@@ -60,7 +60,6 @@ def print_footer(students)
 end
 
 students = input_students
-sort = sort_by_letter
 print_header
-print(students, sort)
+print(students)
 print_footer(students)
