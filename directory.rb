@@ -18,7 +18,7 @@ students = [
 
 
 
-
+# Method to obtain information about the students
 def input_students
   puts "Please enter the names and cohorts of the students"
   puts "To finish, just hit return at name entry"
@@ -41,6 +41,7 @@ def input_students
   students
 end
 
+#Method that will actually obtain the information
 def info_getter
   output = []
   go = ""
@@ -57,29 +58,52 @@ def info_getter
   output
 end
 
+#Method to print the header
 def print_header
-  puts "The students of Villains Academy".center(100)
-  puts "--------------".center(100)
+  puts "The students of Villains Academy".center(80)
+  puts "--------------".center(80)
 end
 
+#Method to print all students out as they were entered
 def print(students)
   count = 1
   until count == students.length+1
     current = students[count-1]
-    puts "#{count}. #{current[:name]} - #{current[:cohort]}".center(100)
+    puts "#{count}. #{current[:name]} - #{current[:cohort]}".center(80)
     count += 1
   end
 end
 
+#Methd to print students by cohort
+def print_cohorts(students)
+
+  student_cohorts = students.map { |n| n[:cohort] }.uniq
+  counter = 0
+
+  while counter != student_cohorts.length
+    students.each do |n|
+      if student_cohorts[counter] == n[:cohort]
+        puts "#{n[:name]} - #{n[:cohort]} cohort".center(80)
+      else
+        false
+      end
+    end
+    counter += 1
+  end
+end
+
+
+#Method to print footer
 def print_footer(students)
   if students.length == 1
-    puts "Overall we have #{students.count} great student.".center(100)
+    puts "Overall we have #{students.count} great student.".center(80)
   else
-    puts "Overall we have #{students.count} great students.".center(100)
+    puts "Overall we have #{students.count} great students.".center(80)
   end
 end
 
 students = input_students
 print_header
-print(students)
+#print(students)
+print_cohorts(students)
 print_footer(students)
