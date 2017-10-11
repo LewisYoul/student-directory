@@ -3,26 +3,34 @@
 #Interactive Menu Method
 def interactive_menu
   loop do
-    puts "1. Input the students"
-    puts "2. Show the students"
-    puts "9. Exit"
-    selection = gets.chomp
-
-    case selection
-      when "1"
-        input_students
-      when "2"
-        print_menu
-      when "9"
-        exit
-      else
-      puts "I don't know what you meant, try again."
-    end
+    print_menu
+    process(gets.chomp)
   end
 end
 
-#Method that prints the menu
+#Process method - decides what to do based on user input
+def process(selection)
+  case selection
+    when "1"
+      input_students
+    when "2"
+      show_students
+    when "9"
+      exit
+    else
+    puts "I don't know what you meant, try again."
+  end
+end
+
+#Method for printing the menu
 def print_menu
+  puts "1. Input the students"
+  puts "2. Show the students"
+  puts "9. Exit"
+end
+
+#Method that prints the menu
+def show_students
   print_header
   print_students_list
   print_footer
@@ -74,11 +82,15 @@ end
 
 #Method to print all students out as they were entered
 def print_students_list
-  count = 1
-  until count == @students.length+1
-    current = @students[count-1]
-    puts "#{count}. #{current[:name]} - #{current[:cohort]}".center(80)
-    count += 1
+  if @students.length > 0
+    count = 1
+    until count == @students.length+1
+      current = @students[count-1]
+      puts "#{count}. #{current[:name]} - #{current[:cohort]}".center(80)
+      count += 1
+    end
+  else
+    puts "You didn't enter any students, there's no list to print.".center(80)
   end
 end
 
@@ -114,6 +126,19 @@ def print_footer
   else
     false
   end
+end
+
+#Method for saving students to .csv file
+def save_students
+  #open the file for writing
+  file = File.open("students.csv", "w")
+  #iterate over the array of students
+  @students.each do |student|
+    student_data = [student[:name], student[:cohort]]
+    csv_line = student_data.join(",")
+    file.puts csv_line
+  end
+  file.close
 end
 
 interactive_menu
