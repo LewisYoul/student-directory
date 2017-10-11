@@ -13,10 +13,31 @@ students = [
   {name: "Norman Bates", cohort: :november}
 ]
 =end
+def interactive_menu
+  students =[]
+  loop do
+    puts "1. Input the students"
+    puts "2. Show the students"
+    puts "9. Exit"
+    selection = gets.chomp
+
+    case selection
+      when "1"
+        students = input_students
+      when "2"
+        print_header
+        print(students)
+        print_footer(students)
+      when "9"
+        exit
+      else
+      puts "I don't know what you meant, try again."
+    end
+  end
+end
 
 
-
-
+#Interactive Menu Method
 
 # Method to obtain information about the students
 def input_students
@@ -46,7 +67,7 @@ def info_getter
   output = []
   go = ""
   until go == "Y"
-    puts "Please enter a name"
+    puts "Please enter a name or return to finish"
     output[0] = gets.chomp.to_sym
     return output if output[0].empty?
     puts "Please enter #{output[0]}'s cohort"
@@ -108,8 +129,8 @@ def print_footer(students)
   end
 end
 
-students = input_students
-print_header
+interactive_menu
+#print_header
 #print(students)
-print_cohorts(students)
-print_footer(students)
+#print_cohorts(students)
+#print_footer(students)
