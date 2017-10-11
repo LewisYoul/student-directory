@@ -1,20 +1,7 @@
-=begin
-students = [
-  {name: "Dr. Hannibal Lecter", cohort: :november},
-  {name: "Darth Vader", cohort: :november},
-  {name: "Nurse Ratched", cohort: :november},
-  {name: "Michael Corleone", cohort: :november},
-  {name: "Alex DeLarge", cohort: :november},
-  {name: "The Wicked Witch of the West", cohort: :november},
-  {name: "Terminator", cohort: :november},
-  {name: "Freddy Kreuger", cohort: :november},
-  {name: "The Joker", cohort: :november},
-  {name: "Joffrey Baratheon", cohort: :november},
-  {name: "Norman Bates", cohort: :november}
-]
-=end
+@students = [] #an empty array accessible to all methods
+
+#Interactive Menu Method
 def interactive_menu
-  students =[]
   loop do
     puts "1. Input the students"
     puts "2. Show the students"
@@ -23,11 +10,9 @@ def interactive_menu
 
     case selection
       when "1"
-        students = input_students
+        input_students
       when "2"
-        print_header
-        print(students)
-        print_footer(students)
+        print_menu
       when "9"
         exit
       else
@@ -36,15 +21,19 @@ def interactive_menu
   end
 end
 
+#Method that prints the menu
+def print_menu
+  print_header
+  print_students_list
+  print_footer
+end
 
-#Interactive Menu Method
 
 # Method to obtain information about the students
 def input_students
   puts "Please enter the names and cohorts of the students"
   puts "To finish, just hit return at name entry"
 
-  students = []
   info = info_getter
   #converted from .each iteration
   while !info[0].empty? do
@@ -55,11 +44,9 @@ def input_students
     else
       hash[:cohort] = info[1]
     end
-    students << hash
+    @students << hash
     info = info_getter
   end
-  #return the array of students
-  students
 end
 
 #Method that will actually obtain the information
@@ -86,24 +73,24 @@ def print_header
 end
 
 #Method to print all students out as they were entered
-def print(students)
+def print_students_list
   count = 1
-  until count == students.length+1
-    current = students[count-1]
+  until count == @students.length+1
+    current = @students[count-1]
     puts "#{count}. #{current[:name]} - #{current[:cohort]}".center(80)
     count += 1
   end
 end
 
 #Methd to print students by cohort
-def print_cohorts(students)
+def print_cohorts
 
-  student_cohorts = students.map { |n| n[:cohort] }.uniq
+  student_cohorts = @students.map { |n| n[:cohort] }.uniq
   counter = 0
 
-  if students.length > 0
+  if @students.length > 0
     while counter != student_cohorts.length
-      students.each do |n|
+      @students.each do |n|
         if student_cohorts[counter] == n[:cohort]
           puts "#{n[:name]} - #{n[:cohort]} cohort".center(80)
         else
@@ -119,18 +106,14 @@ end
 
 
 #Method to print footer
-def print_footer(students)
-  if students.length > 1
-    puts "Overall we have #{students.count} great students.".center(80)
-  elsif students.length == 1
-    puts "Overall we have #{students.count} great student.".center(80)
+def print_footer
+  if @students.length > 1
+    puts "Overall we have #{@students.count} great students.".center(80)
+  elsif @students.length == 1
+    puts "Overall we have #{@students.count} great student.".center(80)
   else
     false
   end
 end
 
 interactive_menu
-#print_header
-#print(students)
-#print_cohorts(students)
-#print_footer(students)
