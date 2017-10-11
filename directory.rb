@@ -4,7 +4,7 @@
 def interactive_menu
   loop do
     print_menu
-    process(gets.chomp)
+    process(STDIN.gets.chomp)
   end
 end
 
@@ -42,42 +42,33 @@ def show_students
   print_footer
 end
 
+#Method to push a new student and cohort into the students array
+def push_to_students(name, cohort)
+  @students << {name: name, cohort: cohort.to_sym}
+end
 
-# Method to obtain information about the students
+#Method to input students
 def input_students
-  puts "Please enter the names and cohorts of the students"
+  puts "Please enter a student name"
   puts "To finish, just hit return at name entry"
+  name = STDIN.gets.chomp
 
-  info = info_getter
-  #converted from .each iteration
-  while !info[0].empty? do
-    hash = Hash.new { |this_hash, key| this_hash[key] = :none }
-    hash[:name] = info[0]
-    if info[1].empty?
-      hash[:cohort]
-    else
-      hash[:cohort] = info[1]
-    end
-    @students << hash
-    info = info_getter
+  while !name.empty?
+    cohort = input_cohort
+    push_to_students(name, cohort)
+    puts "Please enter another name or return to finish"
+    name = STDIN.gets.chomp
   end
 end
 
-#Method that will actually obtain the information
-def info_getter
-  output = []
-  go = ""
-  until go == "Y"
-    puts "Please enter a name or return to finish"
-    output[0] = gets.chomp.to_sym
-    return output if output[0].empty?
-    puts "Please enter #{output[0]}'s cohort"
-    output[1] = gets.chomp.to_sym
-    puts "You entered Name: #{output[0]} and Cohort: #{output[1]}, is this correct?"
-    puts "If correct type Y, if you would like to enter again press any key."
-    go = gets.chomp
+#Method to input cohort
+def input_cohort
+  puts "Enter their cohort"
+  cohort = STDIN.gets.chomp.to_sym
+  if cohort.empty?
+    cohort = :none
   end
-  output
+  cohort
 end
 
 #Method to print the header
@@ -149,14 +140,27 @@ def save_students
 end
 
 #Method for reading students from students.csv
-def load_students
-  file = File.open("students.csv", "r")
+def load_students(filename = "students.csv")
+  file = File.open(filename, "r")
   file.readlines.each do |line|
     name, cohort = line.chomp.split(',')
-    @students << {name: name, cohort: cohort.to_sym}
+    push_to_students(name, cohort)
   end
   file.close
   puts "Loaded #{@students.length} students from students.csv".center(80)
 end
 
+def try_load_students
+  filename = ARGV.first #first argument from the command line
+  return if filename.nil? #get out of the method if a filenme isn't given
+  if File.exists?(filename) #if it exists
+    load_students(filename)
+    puts "Loaded #{@students.count} from #{filename}"
+  else
+    puts "Sorry, #{filename} doesn't exist."
+    exit
+  end
+end
+
+try_load_students
 interactive_menu
