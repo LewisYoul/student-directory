@@ -52,7 +52,7 @@ def info_getter
     puts "Please enter #{output[0]}'s cohort"
     output[1] = gets.chomp.to_sym
     puts "You entered Name: #{output[0]} and Cohort: #{output[1]}, is this correct?"
-    puts "If correct type Y, if you would like to enter again type N"
+    puts "If correct type Y, if you would like to enter again press any key."
     go = gets.chomp
   end
   output
@@ -80,25 +80,31 @@ def print_cohorts(students)
   student_cohorts = students.map { |n| n[:cohort] }.uniq
   counter = 0
 
-  while counter != student_cohorts.length
-    students.each do |n|
-      if student_cohorts[counter] == n[:cohort]
-        puts "#{n[:name]} - #{n[:cohort]} cohort".center(80)
-      else
-        false
+  if students.length > 0
+    while counter != student_cohorts.length
+      students.each do |n|
+        if student_cohorts[counter] == n[:cohort]
+          puts "#{n[:name]} - #{n[:cohort]} cohort".center(80)
+        else
+          false
+        end
       end
+      counter += 1
     end
-    counter += 1
+  else
+    puts "You didn't enter any students, there's no list to print.".center(80)
   end
 end
 
 
 #Method to print footer
 def print_footer(students)
-  if students.length == 1
+  if students.length > 1
+    puts "Overall we have #{students.count} great students.".center(80)
+  elsif students.length == 1
     puts "Overall we have #{students.count} great student.".center(80)
   else
-    puts "Overall we have #{students.count} great students.".center(80)
+    false
   end
 end
 
