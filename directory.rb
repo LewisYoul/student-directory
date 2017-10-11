@@ -49,22 +49,33 @@ end
 
 #Method to input students
 def input_students
-  puts "Please enter a student name"
-  puts "To finish, just hit return at name entry"
+  puts "Please enter a student name".center(80)
+  puts "To finish, just hit return at name entry".center(80)
   name = STDIN.gets.chomp
-
+  counter = 0
   while !name.empty?
+    counter += 1
     cohort = input_cohort
     push_to_students(name, cohort)
-    puts "Please enter another name or return to finish"
+    puts "Please enter another name or return to finish".center(80)
     name = STDIN.gets.chomp
+  end
+  if counter > 1
+    puts "#{counter} students added to list,".center(80)
+    puts "#{@students.length} students in list".center(80)
+  elsif counter == 1
+    puts "#{counter} student added to list".center(80)
+    puts "#{@students.length} students in list".center(80)
+  else
+    puts "No students added to list".center(80)
   end
 end
 
 #Method to input cohort
 def input_cohort
-  puts "Enter their cohort"
+  puts "Enter their cohort".center(80)
   cohort = STDIN.gets.chomp.to_sym
+
   if cohort.empty?
     cohort = :none
   end
@@ -93,7 +104,6 @@ end
 
 #Methd to print students by cohort
 def print_cohorts
-
   student_cohorts = @students.map { |n| n[:cohort] }.uniq
   counter = 0
 
@@ -127,13 +137,10 @@ end
 
 #Method for saving students to .csv file
 def save_students
-  #open the file for writing
-  file = File.open("students.csv", "w")
-  #iterate over the array of students
-  @students.each do |student|
+  file = File.open("students.csv", "w") #open the file fro writing
+  @students.each do |student| #iterate over the students array
     student_data = [student[:name], student[:cohort]]
-    csv_line = student_data.join(",")
-    file.puts csv_line
+    file.puts student_data.join(",")
   end
   puts "#{@students.length} students written to students.csv".center(80)
   file.close
@@ -152,12 +159,11 @@ end
 
 def try_load_students
   filename = ARGV.first #first argument from the command line
-  filename = "students.csv" if filename.nil? #get out of the method if a filenme isn't given
+  filename = "students.csv" if filename.nil? #Load students.csv if filename isn't given
   if File.exists?(filename) #if it exists
     load_students(filename)
-    puts "Loaded #{@students.count} from #{filename}"
   else
-    puts "Sorry, #{filename} doesn't exist."
+    puts "Sorry, #{filename} doesn't exist.".center(80)
     exit
   end
 end
