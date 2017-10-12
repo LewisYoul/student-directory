@@ -139,13 +139,13 @@ end
 def save_students
   puts "Which file would you like to save to?"
   to_save = gets.chomp
-  file = File.open(to_save, "w") #open the file fro writing
-  @students.each do |student| #iterate over the students array
-    student_data = [student[:name], student[:cohort]]
-    file.puts student_data.join(",")
+  File.open(to_save, "w") do |file| #open the file fro writing
+    @students.each do |student| #iterate over the students array
+      student_data = [student[:name], student[:cohort]]
+      file.puts student_data.join(",")
+    end
+    puts "#{@students.length} students written to students.csv".center(80)
   end
-  puts "#{@students.length} students written to students.csv".center(80)
-  file.close
 end
 
 #Method for reading students from students.csv
@@ -156,12 +156,12 @@ def load_students
     puts "That file doesn't exist, try again"
     filename = gets.chomp
   end
-  file = File.open(filename, "r")
-  file.readlines.each do |line|
-    name, cohort = line.chomp.split(',')
-    push_to_students(name, cohort)
+  File.open(filename, "r") do |file|
+    file.readlines.each do |line|
+      name, cohort = line.chomp.split(',')
+      push_to_students(name, cohort)
+    end
   end
-  file.close
   puts "Loaded #{@students.length} students from #{filename}".center(80)
 end
 
