@@ -1,3 +1,4 @@
+require 'csv'
 @students = [] #an empty array accessible to all methods
 
 #Interactive Menu Method
@@ -139,7 +140,7 @@ end
 def save_students
   puts "Which file would you like to save to?"
   to_save = gets.chomp
-  File.open(to_save, "w") do |file| #open the file fro writing
+  CSV.open(to_save, "w") do |file| #open the file fro writing
     @students.each do |student| #iterate over the students array
       student_data = [student[:name], student[:cohort]]
       file.puts student_data.join(",")
@@ -156,11 +157,9 @@ def load_students
     puts "That file doesn't exist, try again"
     filename = gets.chomp
   end
-  File.open(filename, "r") do |file|
-    file.readlines.each do |line|
-      name, cohort = line.chomp.split(',')
-      push_to_students(name, cohort)
-    end
+  CSV.foreach(filename) do |row|
+    name, cohort = row
+    push_to_students(name, cohort)
   end
   puts "Loaded #{@students.length} students from #{filename}".center(80)
 end
